@@ -221,7 +221,32 @@ function displayValue($name)
 	}
 }
 
-//	Fetch list of courses created by user
+/***ADD A NEW COURSE***/
+function addCourse($course_name, $account_id)
+{	
+	/*	VALIDATE COURSE INFORMATION	*/
+	// check if course_name is a valid string, else return an error
+	if(!isNameValid($course_name)){return 'course name is invalid';}
+
+	/*	SAVE NEW COURSE	*/
+	global $conn;
+
+	$sql = "INSERT INTO courses (course_name, account_id) VALUES (:course_name, :account_id)";
+	$values = array(
+		':course_name'=>strtolower($course_name),
+		':account_id'=>intval($account_id, 10)
+	);
+
+	try{
+		$result = $conn->prepare($sql);
+		$result->execute($values);
+		return TRUE;
+	}catch(PDOException $error){
+		return 'error saving course';
+	}
+}
+
+/***VIEW COURSES***/
 function getCourses($account_id)
 {
 	global $conn;
@@ -236,5 +261,37 @@ function getCourses($account_id)
 	}catch(PDOException $error){
 		return FALSE;
 	}
+}
+
+/***EDIT A COURSE***/
+function updateCourse($course_id, $course_name, $account_id)
+{
+	/*	VALIDATE COURSE INFORMATION	*/
+	// check if course_name is a valid string, else return an error
+	if(!isNameValid($course_name)){return 'course name is invalid';}
+
+	/*	SAVE NEW COURSE	*/
+	global $conn;
+
+	$sql = "UPDATE courses SET course_name = :course_name WHERE course_id = :course_id AND account_id = :account_id";
+	$values = array(
+		':course_name'=>strtolower($course_name),
+		':course_id'=>intval($course_id, 10),
+		':account_id'=>intval($account_id, 10)
+	);
+
+	try{
+		$result = $conn->prepare($sql);
+		$result->execute($values);
+		return TRUE;
+	}catch(PDOException $error){
+		return 'error updating course information';
+	}
+}
+
+/***DELETE A COURSE***/
+function deleteCourse($course_id, $account_id)
+{
+	
 }
 ?>
