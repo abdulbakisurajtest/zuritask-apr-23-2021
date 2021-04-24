@@ -51,11 +51,12 @@ function loginUser($username, $password)
 	if(!isPasswordValid($password)){return 'Password is invalid';}
 
 	/*	CHECK IF USER INFORMATION HAS A MATCH	*/
-	//	if username already exists, return error
+	//	if user exists
 	if(checkUser($username) === TRUE){
 		$user = checkPassword($username, $password);
 		//	if passwords match, set SESSION variables
 		if($user !== FALSE){
+			$_SESSION['user']['account_id'] = $user['account_id'];
 			$_SESSION['user']['first_name'] = $user['first_name'];
 			$_SESSION['user']['last_name'] = $user['last_name'];
 			$_SESSION['user']['username'] = $user['username'];
@@ -66,6 +67,11 @@ function loginUser($username, $password)
 			return 'password is not correct';
 		}
 	}
+	//	if user does not exist
+	else{
+		return 'username does not exist';
+	}
+	
 }
 
 /***RESET USER PASSWORD***/
@@ -212,6 +218,23 @@ function displayValue($name)
 	if(isset($_POST[$name]) && !empty($_POST[$name]))
 	{
 		echo $_POST[$name];
+	}
+}
+
+//	Fetch list of courses created by user
+function getCourses($account_id)
+{
+	global $conn;
+	$sql = "SELECT * FROM courses WHERE account_id = :id";
+	$values = array(':id'=>intval($account_id, 10));
+	
+	try{
+		$result = $conn->prepare($sql);
+		$result->execute($values);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		return $result;
+	}catch(PDOException $error){
+		return FALSE;
 	}
 }
 ?>

@@ -10,3 +10,10 @@ CREATE TABLE accounts(
     password VARCHAR(128) NOT NULL,
     PRIMARY KEY(account_id)
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+CREATE TABLE courses(
+    course_id INT AUTO_INCREMENT,
+    course_name VARCHAR(128) NOT NULL,
+    account_id INT NOT NULL,
+    PRIMARY KEY(course_id)
+)ENGINE=InnoDB DEFAULT CHARSET=UTF8;
