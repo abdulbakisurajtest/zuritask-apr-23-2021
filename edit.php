@@ -23,6 +23,15 @@ if(isset($_POST['editCourse']))
 //  fetch single course info
 if(isset($_GET['id'])){
     $courseData = getSingleCourse($_GET['id']);
+    if(
+        empty($courseData) || 
+        !is_array($courseData) || 
+        $courseData['account_id'] !== $_SESSION['user']['account_id']
+        )
+    {
+        header('Location: index.php');
+        exit(0);
+    }
 }else{
     header('Location: index.php');
     exit(0);
@@ -35,7 +44,7 @@ if(isset($_GET['id'])){
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Add Course</title>
+	<title>Edit Course</title>
 </head>
 <body>
 	<h1>Zuri Task - 2021/04/23</h1>
