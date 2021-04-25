@@ -49,6 +49,24 @@ $courseData = getCourses($_SESSION['user']['account_id']);
 	</p>
 	<h2>Course Dashboard</h2>
 	<p><a href="add.php">Add new course</a></p>
+	<p style="color: red;">
+            <?php
+            if(!empty($_SESSION['error']))
+            {
+                echo $_SESSION['error'];
+                unset($_SESSION['error']);
+            }
+            ?>
+        </p>
+        <p style="color: green;">
+            <?php
+            if(!empty($_SESSION['message']))
+            {
+                echo $_SESSION['message'];
+                unset($_SESSION['message']);
+            }
+            ?>
+        </p>
 	<table>
 		<thead>
 			<th>S/N</th>

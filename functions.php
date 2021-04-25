@@ -263,6 +263,21 @@ function getCourses($account_id)
 	}
 }
 
+function getSingleCourse($id)
+{
+	global $conn;
+	$sql = "SELECT * FROM courses WHERE course_id = :id LIMIT 1";
+	$values = array(':id'=>intval($id, 10));
+	
+	try{
+		$result = $conn->prepare($sql);
+		$result->execute($values);
+		$result = $result->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}catch(PDOException $error){
+		return FALSE;
+	}
+}
 /***EDIT A COURSE***/
 function updateCourse($course_id, $course_name, $account_id)
 {
@@ -292,6 +307,19 @@ function updateCourse($course_id, $course_name, $account_id)
 /***DELETE A COURSE***/
 function deleteCourse($course_id, $account_id)
 {
-	
+	global $conn;
+
+	$sql = "DELETE FROM courses WHERE course_id = :course_id AND account_id = :account_id";
+	$values = array(
+		':course_id'=>intval($course_id, 10),
+		':account_id'=>intval($account_id, 10)
+	);
+	try{
+		$result = $conn->prepare($sql);
+		$result->execute($values);
+		return TRUE;
+	}catch(PDOException $error){
+		return 'error deleting course from database';
+	}
 }
 ?>
