@@ -7,7 +7,7 @@ $error = "";
 $message = "";
 if(isset($_POST['reset_password']))
 {
-	$error = resetPassword($_SESSION['user']['first_name'], $_SESSION['user']['last_name'], $_SESSION['user']['username'], $_POST['old_password'], $_POST['new_password']);
+	$error = resetPassword($_SESSION['user']['account_id'], $_SESSION['user']['username'], $_POST['old_password'], $_POST['new_password']);
 	if($error === 'success')
 	{
 		$message = 'Password has been changed successfully';
@@ -59,7 +59,10 @@ if(isset($_POST['reset_password']))
 			</p>
 		</label>
 		<p>
-			<a href="index.php">Cancel</a>&nbsp;&nbsp;<button type="submit" name="reset_password">Change</button>
+			<a href="index.php">Cancel</a>
+			&nbsp;&nbsp;
+			<button type="submit" name="reset_password">Change</button>
 		</p>
+	</form>
 </body>
 </html>

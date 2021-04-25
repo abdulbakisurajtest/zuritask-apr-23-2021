@@ -75,15 +75,9 @@ function loginUser($username, $password)
 }
 
 /***RESET USER PASSWORD***/
-function resetPassword($firstName, $lastName, $username, $oldPassword, $newPassword)
+function resetPassword($account_id, $username, $oldPassword, $newPassword)
 {
-	/*	VALIDATE USER INFORMATION */
-	// check if first name is a valid string, else return an error
-	if(!isNameValid($firstName)){return 'First name is invalid';}
-	// check if last name is a valid string, else return an error
-	if(!isNameValid($lastName)){return 'Last name is invalid';}		
-	// check if username is a valid string, else return an error
-	if(!isNameValid($username)){return 'Username is invalid';}		
+	/*	VALIDATE USER INFORMATION */		
 	// check if old password has a valid length, else return an error
 	if(!isPasswordValid($oldPassword)){return 'Old password is invalid';}
 	// check if new password has a valid length, else return an error
@@ -95,10 +89,10 @@ function resetPassword($firstName, $lastName, $username, $oldPassword, $newPassw
 	if($user !== FALSE){
 		// update user information in database
 		global $conn;
-		$sql = "UPDATE account SET password = :new_password WHERE account_id = :account_id";
+		$sql = "UPDATE accounts SET password = :new_password WHERE account_id = :account_id";
 		$values = array(
 			':new_password'=>hash('md5', $newPassword),
-			':account_id'=>intval($user['account_id'], 10)
+			':account_id'=>intval($account_id, 10)
 		);
 		try{
 			$result = $conn->prepare($sql);
